@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+plugins {
+    id 'com.gradle.plugin-publish' version '0.9.10'
+
+    id 'groovy'
+    id 'idea'
+    id 'base'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+dependencies {
+    compile gradleApi()
+
+    compile "com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.0"
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+    compile 'org.apache.commons:commons-lang3:3.8.1'
+    compile 'commons-io:commons-io:2.6'
+}
+
+repositories {
+
+    maven {
+        url rootProject.projectDir.getAbsolutePath() + "/../filerepo"
+    }
+
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+
+    jcenter()
+    mavenLocal()
+}
+
+group 'com.chris.gradle.json'
+version "8.1.4"
+
+sourceCompatibility = 1.8
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+
+pluginBundle {
+    website = 'https://github.com/chris060986/gradle-java-jsonSchema'
+    vcsUrl = 'https://github.com/chris060986/gradle-java-jsonSchema.git'
+    description = 'Gradle JsonSchema is a simple generator for JSON Schema from java files within Gradle.'
+    tags = ['json', 'jsonschema']
+
+    plugins {
+        jsonPlugin {
+            id = 'com.chris.json.schema'
+            displayName = 'Gradle JSON Schema'
+        }
+    }
+}

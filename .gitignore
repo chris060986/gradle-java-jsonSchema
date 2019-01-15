@@ -1,0 +1,68 @@
+# Logs and databases #
+######################
+*.log
+*.log.*
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.directory
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Generated build directories
+#############################
+.gradle
+.gradlecache
+bin
+build
+classes
+jenkinsJdepend.xml
+target
+
+# Eclipse Settings Files
+#########################
+*.checkstyle
+*.classpath
+*.pmd
+*.pmdruleset.xml
+*.project
+*.pydevproject
+*.settings
+
+# Intellij Project Files
+######################
+.idea
+*.iml
+*.ipr
+*.iws
+atlassian-ide-plugin.xml
+out/
+
+# Gradle outputs
+################
+.gradletasknamecache
+*.swp
+
+# Backup files
+##############
+*~
+
+# Strange bin files (that are created while unit testing)
+##############
+monitor/*.bin
+monitor/Forked*\.bin
+monitor/Thread\.bin
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Microsoft Visual Studio Code
+.vscode/settings.json
+
+# Python
+*.pyc
