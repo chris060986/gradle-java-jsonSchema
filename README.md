@@ -1,7 +1,7 @@
 # gradle-java-jsonSchema
 [![Build Status](https://travis-ci.org/chris060986/gradle-java-jsonSchema.svg?branch=master)](https://travis-ci.org/chris060986/gradle-java-jsonSchema)
 
-Gradle plugin that allows to generate json schema from java classes and build a zip file containing all the schemas.
+Gradle plugin that allows to generate json schema from java classes and build a zip file containing all the schemas. For all classes which are compiled to _buildDir/java/classes/main_ a json schema will be generated. Plugin allows to include/exclude class files. See plugin parameters.
 
 ## How to use
 
@@ -48,11 +48,11 @@ jsonSchema {
     include "**/*Seq.class"
 }
 ```
-#### Parameters  
+#### Plugin Parameters  
 **compileClasspath**: The configuration where gradle-java-jsonSchema-plugin can find the jars needed to compile java files. In a normal java project it should set to _sourceSets.main.compileClasspath_.  
-**pretty**: tbd  
-**exclude**: tbd  
-**include**: tbd
+**pretty**: Defines if the json schemas should be generated in compact or in human readable way. Default is false (compact).  
+**exclude**: Exclude class files from schema generation.  
+**include**: Include class files in schema generation.
 
 
 ### Generate schemas or zip-file
