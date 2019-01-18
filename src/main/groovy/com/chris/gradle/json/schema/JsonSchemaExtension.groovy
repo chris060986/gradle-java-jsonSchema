@@ -8,7 +8,7 @@ class JsonSchemaExtension {
 
     private DefaultConfiguration compileClasspath
     private boolean pretty = false
-    private String exclude = ""
+    private List<String> exclude = new ArrayList<>()
     private String include = "**"
 
     JsonSchemaExtension(Project project) {
@@ -31,12 +31,16 @@ class JsonSchemaExtension {
         this.pretty = pretty
     }
 
-    String getExclude() {
+    List<String> getExclude() {
         return exclude
     }
 
-    void setExclude(String exclude) {
-        this.exclude = exclude
+    void setExclude(String... exclude) {
+        this.exclude.addAll(exclude)
+    }
+
+    void exclude(String... exclude) {
+        this.exclude.addAll(exclude)
     }
 
     String getInclude() {

@@ -44,7 +44,7 @@ The plugin has some simple configuration mechanism to control the generated json
 jsonSchema {
     compileClasspath = sourceSets.main.compileClasspath
     pretty true
-    exclude "**/*Support.class"
+    exclude "**/*Support.class", "**/*Communication*"
     include "**/*Seq.class"
 }
 ```

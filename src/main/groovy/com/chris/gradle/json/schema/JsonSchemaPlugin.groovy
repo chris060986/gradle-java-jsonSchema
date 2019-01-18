@@ -25,10 +25,17 @@ class JsonSchemaPlugin implements Plugin<Project> {
                 FileTree classFileTree = getProject().getTasks().getByName("compileJava").getOutputs().files.asFileTree
                 Set<String> filesToGenerate = new HashSet<String>()
 
-                Set<File> classFiles = classFileTree.matching {
-                    exclude extension.exclude
+                classFileTree = classFileTree.matching {
                     include extension.include
-                }.files
+                }
+
+                extension.getExclude().stream().forEach{
+                    excludeString -> classFileTree = classFileTree.matching{
+                        exclude excludeString
+                    }
+                }
+
+                Set<File> classFiles = classFileTree.files
                 println "Files included in generation"
                 println classFiles
 
