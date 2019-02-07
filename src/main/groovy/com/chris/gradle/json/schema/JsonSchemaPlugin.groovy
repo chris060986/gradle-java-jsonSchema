@@ -11,6 +11,8 @@ import org.gradle.api.Task
 import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.bundling.Zip
 
+import java.util.stream.Collectors
+
 class JsonSchemaPlugin implements Plugin<Project> {
 
     void apply(Project project) {
@@ -22,10 +24,10 @@ class JsonSchemaPlugin implements Plugin<Project> {
 
             doLast {
 
-                FileTree classFileTree = getProject().getTasks().getByName("compileJava").getOutputs().files.asFileTree
+                FileTree fullClassFileTree = getProject().getTasks().getByName("compileJava").getOutputs().files.asFileTree
                 Set<String> filesToGenerate = new HashSet<String>()
 
-                classFileTree = classFileTree.matching {
+                FileTree classFileTree = fullClassFileTree.matching {
                     include extension.include
                 }
 
@@ -33,14 +35,6 @@ class JsonSchemaPlugin implements Plugin<Project> {
                     excludeString -> classFileTree = classFileTree.matching{
                         exclude excludeString
                     }
-                }
-
-                Set<File> classFiles = classFileTree.files
-                println "Files included in generation"
-                println classFiles
-
-                classFiles.forEach {
-                    file -> filesToGenerate.add(parseJavaClassNameFromClassFile(project, file))
                 }
 
                 Set<File> compileClasspath = extension.compileClasspath.getFiles()
@@ -56,6 +50,20 @@ class JsonSchemaPlugin implements Plugin<Project> {
                 def classLoader = new URLClassLoader(mergedClasspathFiles.collect {
                     it.toURI().toURL()
                 } as URL[], Thread.currentThread().getContextClassLoader())
+
+                Set<File> classFiles = classFileTree.files
+
+                classFiles = classFiles.stream().filter{
+                    file -> isDdsTopic(project, file, classLoader, fullClassFileTree)
+                }.collect(Collectors.toSet())
+                println classFiles
+
+                classFiles.forEach {
+                    file -> filesToGenerate.add(parseJavaClassNameFromClassFile(project, file))
+                }
+
+                println "Files included in generation"
+                println classFiles
 
                 try {
                     FileWriter writer = new FileWriter(generatedFileDir)
@@ -95,6 +103,21 @@ class JsonSchemaPlugin implements Plugin<Project> {
         }
         schemaZip.dependsOn task
         schemaZip.mustRunAfter task
+    }
+
+    private static boolean isDdsTopic(Project project, File classFile, ClassLoader classLoader, FileTree classFileTree) {
+        String name = classFile.name
+        name = StringUtils.removeEnd(name,"Impl.class" )
+        if(name.startsWith("lu_")){
+            name = name + "_topic.class"
+        } else {
+            name = "Topic"+ name + ".class"
+        }
+
+        def matching = classFileTree.matching {
+            include "**/" + name
+        }
+        return !matching.isEmpty()
     }
 
     private static String parseJavaClassNameFromClassFile(Project project, File classFile){

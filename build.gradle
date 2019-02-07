@@ -42,7 +42,7 @@ repositories {
 }
 
 group 'com.chris.gradle.json'
-version "0.1.5"
+version "0.1.8"
 
 sourceCompatibility = 1.8
 
