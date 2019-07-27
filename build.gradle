@@ -21,7 +21,7 @@ plugins {
 dependencies {
     compile gradleApi()
 
-    compile "com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.0"
+    compile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.34'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
     compile 'org.apache.commons:commons-lang3:3.8.1'
     compile 'commons-io:commons-io:2.6'
@@ -42,7 +42,7 @@ repositories {
 }
 
 group 'com.chris.gradle.json'
-version "0.1.5"
+version "0.1.6"
 
 sourceCompatibility = 1.8
 

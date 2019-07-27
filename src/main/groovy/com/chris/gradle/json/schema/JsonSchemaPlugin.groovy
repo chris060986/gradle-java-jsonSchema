@@ -1,9 +1,9 @@
 package com.chris.gradle.json.schema
 
 import com.chris.gradle.json.io.FileWriter
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator
+import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator
 import org.apache.commons.lang3.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -63,14 +63,14 @@ class JsonSchemaPlugin implements Plugin<Project> {
                     filesToGenerate.parallelStream().forEach {
                         fileName ->
                             def clazz = classLoader.loadClass(fileName)
-                            JsonSchema schema = jsonSchemaGenerator.generateSchema(clazz)
+                            JsonNode schema = jsonSchemaGenerator.generateJsonSchema(clazz)
                             String jsonString
-                            if(extension.pretty){
+                            if (extension.pretty) {
                                 jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema)
                             } else {
                                 jsonString = mapper.writeValueAsString(schema)
                             }
-                            writer.writeJson(getJsonFileName(fileName), jsonString)
+                            writer.writeJson(toJsonFileName(fileName), jsonString)
                     }
 
                 } finally {
@@ -97,16 +97,16 @@ class JsonSchemaPlugin implements Plugin<Project> {
         schemaZip.mustRunAfter task
     }
 
-    private static String parseJavaClassNameFromClassFile(Project project, File classFile){
+    private static String parseJavaClassNameFromClassFile(Project project, File classFile) {
 
         String name = classFile.absolutePath
         name = StringUtils.removeStart(name, project.buildDir.path + "/classes/java/main/")
-        name = StringUtils.removeEnd(name,".class" )
+        name = StringUtils.removeEnd(name, ".class")
         name = StringUtils.replace(name, "/", ".")
         return name
     }
 
-    private static String getJsonFileName(String qualifiedName){
-        return StringUtils.substringAfterLast(qualifiedName, ".") + ".json"
+    private static String toJsonFileName(String className) {
+        return StringUtils.substringAfterLast(className, ".") + ".json"
     }
 }
