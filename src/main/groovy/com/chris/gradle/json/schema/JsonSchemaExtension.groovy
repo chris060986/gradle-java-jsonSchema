@@ -1,26 +1,29 @@
 package com.chris.gradle.json.schema
 
 import org.gradle.api.Project
-import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 
 class JsonSchemaExtension {
     private Project project
 
-    private DefaultConfiguration compileClasspath
+    private Set<File> compileClasspath = []
     private boolean pretty = false
-    private List<String> exclude = new ArrayList<>()
-    private String include = "**"
+    private List<String> exclude = []
+    private List<String> include = []
 
     JsonSchemaExtension(Project project) {
         this.project = project
     }
 
-    DefaultConfiguration getCompileClasspath() {
+    Set<File> getCompileClasspath() {
         return compileClasspath
     }
 
-    void setCompileClasspath(DefaultConfiguration compileClasspath) {
+    void setCompileClasspath(Set<File> compileClasspath) {
         this.compileClasspath = compileClasspath
+    }
+
+    void compileClasspath(Collection<File> files) {
+        this.compileClasspath.addAll(files)
     }
 
     boolean getPretty() {
@@ -35,19 +38,23 @@ class JsonSchemaExtension {
         return exclude
     }
 
-    void setExclude(String... exclude) {
-        this.exclude.addAll(exclude)
+    void setExclude(List<String> exclude) {
+        this.exclude = exclude
     }
 
     void exclude(String... exclude) {
         this.exclude.addAll(exclude)
     }
 
-    String getInclude() {
+    List<String> getInclude() {
         return include
     }
 
-    void setInclude(String include) {
+    void setInclude(List<String> include) {
         this.include = include
+    }
+
+    void include(String... include) {
+        this.include.addAll(include)
     }
 }

@@ -26,11 +26,11 @@ buildscript {
         mavenLocal()
         jcenter()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url 'https://plugins.gradle.org/m2/'
         }
     }
     dependencies {
-        classpath "com.chris.gradle.json:gradle-java-jsonSchema:0.1.4"
+        classpath 'com.chris.gradle.json:gradle-java-jsonSchema:0.1.6'
     }
 }
 apply plugin: 'java'
@@ -42,10 +42,9 @@ It's necessary to apply the java plugin, because this plugin depends on java bui
 The plugin has some simple configuration mechanism to control the generated json schema. 
 ```Gradle
 jsonSchema {
-    compileClasspath = sourceSets.main.compileClasspath
     pretty true
-    exclude "**/*Support.class", "**/*Communication*"
-    include "**/*Seq.class"
+    include '**/*Seq.class', '**/*List.class'
+    exclude '**/*Support.class', '**/*Communication*'
 }
 ```
 #### Plugin Parameters  
